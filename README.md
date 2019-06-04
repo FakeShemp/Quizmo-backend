@@ -4,7 +4,7 @@ Quizmo är en app där användaren lätt kan skapa quizzes från sina spellistor
 
 Användaren loggar lätt in genom sitt Spotify-account och kan sedan välja en spellista att göra frågor från. Flera olika svarsalternativ genereras från informationen hämtad från Spotify, som användaren kan skriva valfri fråga till. Sedan sparas frågor och svar undan så användaren kan komma tillbaka till dem senare.
 
-## implementera 
+## Implementera 
 
 1. Tillgång till och möjlighet att andrä eller ta bort quizzes genom CRUD metoder.
 2. Inlogg för användare.
