@@ -6,6 +6,6 @@ Användaren loggar lätt in genom sitt Spotify-account och kan sedan välja en s
 
 ## implementera 
 
-1. tillgång till och möjlighet att andrä eller ta bort quizzes genom CRUD metoder.
-2. inlogg för användare.
+1. Tillgång till och möjlighet att andrä eller ta bort quizzes genom CRUD metoder.
+2. Inlogg för användare.
 3. Fixa till auth.
