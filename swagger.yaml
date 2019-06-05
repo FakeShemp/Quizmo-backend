@@ -1,1 +1,245 @@
-
+swagger: "2.0"
+info:
+  description: "This is Quizmo, a spotify quiz application"
+  version: "0.1.0"
+  title: "Swagger Quizmo"
+  termsOfService: "TBD"
+  contact:
+    email: "quizmo@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3000"
+tags:
+  - name: "user"
+    description: "Everything about user information"
+  - name: "quiz"
+    description: "Access to quizes"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /user:
+    post:
+      tags:
+        - "user"
+      summary: "Create user profile"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Created user object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "user was created"
+        500: 
+          description: "internal server error"
+  /user/{id}:
+    get:
+      tags:
+      - "user"
+      summary: "Gets user data"
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The mongodb id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties: 
+              userId: 
+                type: "string"
+                format: "uuid" 
+              email:
+                type: "string"
+            description: "gets user data"
+        400:
+          description: "Invalid userid supplied"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "email that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+  /quiz:
+    post:
+      tags:
+        - "quiz"
+      summary: "Create quiz"
+      description: "This can only be done by the logged in user."
+      operationId: "createQuiz"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Created user object"
+          required: true
+          schema:
+            $ref: "#/definitions/Quiz"
+      responses:
+        200:
+          description: " was created"
+        500: 
+          description: "internal server error"
+  /quiz/{id}:
+    get:
+      tags:
+      - "quiz"
+      summary: "Gets quiz"
+      operationId: "getQuiz"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The mongodb id"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties: 
+              quizId: 
+                type: "string"
+                format: "uuid" 
+              email:
+                type: "string"
+            description: "gets quiz data"
+        400:
+          description: "Invalid userid supplied"
+    put:
+      tags:
+      - "quiz"
+      summary: "Updated quiz"
+      description: "This can only be done by the logged in user."
+      operationId: "updateQuiz"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "quiz that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated quiz object"
+        required: true
+        schema:
+          $ref: "#/definitions/Quiz"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "quiz not found"
+    delete:
+      tags:
+      - "quiz"
+      summary: "Delete quiz"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteQuiz"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The quiz that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid quizId supplied"
+        404:
+          description: "quiz not found"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      userId:
+        type: "string"
+      email:
+        type: "string"
+    xml:
+      name: "User"
+  Quiz:
+    type: "object"
+    properties:
+      name: 
+        type: "string"
+      user: 
+        type: "string"
+        format: "uuid"
+      questions:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            question:
+              type: "string"
+            answer:
+              type: "string"
