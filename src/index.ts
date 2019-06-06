@@ -3,7 +3,7 @@ import routes from "./routes";
 import { connect } from 'mongoose';
 const app = express();
 
-connect('mongodb://localhost:27017/students', { useNewUrlParser: true });
+connect('mongodb://localhost:27017/quizmo', { useNewUrlParser: true });
 
 const port = process.env.PORT || 3012;
 
