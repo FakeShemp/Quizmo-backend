@@ -1,7 +1,7 @@
 import { UserModel } from "../schemas/user";
 import { QuizModel } from "../schemas/quiz"
 
-let getUserById = async (req: any, res: any, next: any) => {
+let getUser = async (req: any, res: any, next: any) => {
     try {
         const result = await UserModel.findById(req.params.id).exec();
         if (result) {
@@ -14,21 +14,15 @@ let getUserById = async (req: any, res: any, next: any) => {
 }
 let createUser = async (req: any, res: any, next: any) => {
     try {
-        const result = await UserModel.findOne({ userId: req.body.userId }).exec();
+        const result = await UserModel.create({
+            userId: req.body.userId,
+            email: req.body.email
+        });
         if (result) {
             res.status(200).send(result);
         }
         else {
-            const result2 = await UserModel.create({
-                userId: req.body.userId,
-                email: req.body.email
-            });
-            if (result2) {
-                res.status(201).send(result2);
-            }
-            else {
-                throw "Couldn't create user!";
-            }
+            throw "Couldn't create user!";
         }
     }
     catch (error) {
