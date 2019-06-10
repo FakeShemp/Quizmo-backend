@@ -1,6 +1,6 @@
 import { Router } from 'express';
 const router = Router();
-import { users } from './methods.js';
+import { users } from './methods';
 
 router.get("/user/:id", users.getUser);
 router.get('/quiz', users.getQuiz);

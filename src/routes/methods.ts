@@ -67,7 +67,7 @@ let createQuiz = async (req: any, res: any, next: any) => {
 
 
 export const users = {
-    getUser: getUser,
+    getUser: createUser,
     getQuiz: getQuiz,
     createQuiz: createQuiz
 };
