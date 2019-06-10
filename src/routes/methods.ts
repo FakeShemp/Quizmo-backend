@@ -1,6 +1,6 @@
 import { UserModel } from "../schemas/user";
 
-let getUser = async (req: any, res: any, next: any) => {
+let getUserById = async (req: any, res: any, next: any) => {
     try {
         const result = await UserModel.findById(req.params.id).exec();
         if (result) {
@@ -14,15 +14,21 @@ let getUser = async (req: any, res: any, next: any) => {
 
 let createUser = async (req: any, res: any, next: any) => {
     try {
-        const result = await UserModel.create({
-            userId: req.body.userId,
-            email: req.body.email
-        });
+        const result = await UserModel.findOne({ userId: req.body.userId }).exec();
         if (result) {
             res.status(200).send(result);
         }
         else {
-            throw "Couldn't create user!";
+            const result2 = await UserModel.create({
+                userId: req.body.userId,
+                email: req.body.email
+            });
+            if (result2) {
+                res.status(201).send(result2);
+            }
+            else {
+                throw "Couldn't create user!";
+            }
         }
     }
     catch (error) {
@@ -31,6 +37,6 @@ let createUser = async (req: any, res: any, next: any) => {
 }
 
 export const users = {
-    get: getUser,
+    get: getUserById,
     post: createUser
 };
