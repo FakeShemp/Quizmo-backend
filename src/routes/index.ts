@@ -1,9 +1,13 @@
 import { Router } from 'express';
 const router = Router();
-import { users } from './methods';
+import { users, quizzes } from './methods';
 
-router.get("/user/:id", users.getUser);
-router.get('/quiz', users.getQuiz);
-router.post('/quiz', users.createQuiz);
+router.get("/user/:id", users.get);
+router.post("/user", users.create);
+
+router.get("/spotify/:id", users.getBySpotifyId);
+
+router.get('/quiz/:userId', quizzes.get);
+router.post('/quiz', quizzes.create);
 
 export default router;
