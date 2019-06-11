@@ -12,6 +12,19 @@ let getUserById = async (req: any, res: any, next: any) => {
         res.status(500).send(error);
     }
 }
+
+let getUserBySpotifyId = async (req: any, res: any, next: any) => {
+    try {
+        const result = await UserModel.findOne({ userId: req.params.id }).exec();
+        if (result) {
+            res.status(200).send(result);
+        }
+    }
+    catch (error) {
+        res.status(500).send(error);
+    }
+}
+
 let createUser = async (req: any, res: any, next: any) => {
     try {
         const result = await UserModel.findOne({ userId: req.body.userId }).exec();
@@ -35,11 +48,15 @@ let createUser = async (req: any, res: any, next: any) => {
         res.status(500).send(error);
     }
 }
+
 let getQuiz = async (req: any, res: any, next: any) => {
     try {
-        const result = await QuizModel.findById(req.params.id).exec();
+        const result = await QuizModel.find({ user: req.params.userId }).exec();
         if (result) {
             res.status(200).send(result);
+        }
+        else {
+            throw "Couldn't find any quiz!"
         }
     }
     catch (error) {
@@ -47,16 +64,12 @@ let getQuiz = async (req: any, res: any, next: any) => {
     }
 }
 
-
 let createQuiz = async (req: any, res: any, next: any) => {
     try {
         const result = await QuizModel.create({
             name: req.body.name,
             user: req.body.user,
-            questions: [{
-                question: req.body.questions.question,
-                answer: req.body.questions.answer
-            }]
+            questions: req.body.questions
         })
         if (result) {
             res.status(200).send(result);
@@ -70,10 +83,13 @@ let createQuiz = async (req: any, res: any, next: any) => {
     }
 }
 
-
-
 export const users = {
-    getUser: createUser,
-    getQuiz: getQuiz,
-    createQuiz: createQuiz
+    get: getUserById,
+    getBySpotifyId: getUserBySpotifyId,
+    create: createUser
 };
+
+export const quizzes = {
+    get: getQuiz,
+    create: createQuiz
+}
