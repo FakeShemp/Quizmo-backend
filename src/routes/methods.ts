@@ -70,10 +70,6 @@ let createQuiz = async (req: any, res: any, next: any) => {
             name: req.body.name,
             user: req.body.user,
             questions: req.body.questions
-            // questions: [{
-            //     question: req.body.questions.question,
-            //     answer: req.body.questions.answer
-            // }]
         })
         if (result) {
             res.status(200).send(result);
