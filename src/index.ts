@@ -4,7 +4,7 @@ import { connect } from 'mongoose';
 import cors from 'cors';
 const app = express();
 
-connect('mongodb://localhost:27017/quizmo', { useNewUrlParser: true });
+connect('mongodb://localhost:27017/quizmo', { useNewUrlParser: true, autoIndex: false });
 
 const port = process.env.PORT || 3012;
 

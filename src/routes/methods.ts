@@ -83,6 +83,21 @@ let createQuiz = async (req: any, res: any, next: any) => {
     }
 }
 
+let deleteById = async (req: any, res: any, next: any) => {
+    try {
+        const deleted = await QuizModel.findByIdAndDelete( req.params.id ).exec()
+
+        if (deleted) {
+            return res.send(deleted).status(200);
+        } else {
+            throw "Couldn't delete quiz!"
+        }
+    }
+    catch (error) {
+        res.status(500).send(error)
+    }
+}
+
 export const users = {
     get: getUserById,
     getBySpotifyId: getUserBySpotifyId,
@@ -91,5 +106,13 @@ export const users = {
 
 export const quizzes = {
     get: getQuiz,
-    create: createQuiz
+    create: createQuiz,
+    delete: deleteById
 }
+
+
+// curl -X POST "localhost:3012/quiz" -H "accept: application/json" -H "Content-Type: application/json" -d  '{"name":"martin", "user": "5cff76e22d45a0644b9b4f84", "questions": [{
+//     "question": "hur mycket är pi?",
+//     "answer": "3.14"
+// }]
+// }'
