@@ -9,12 +9,12 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "localhost:3000"
+host: "localhost:3012"
 tags:
   - name: "user"
-    description: "Everything about user information"
+    description: "Access to information about a user"
   - name: "quiz"
-    description: "Access to quizes"
+    description: "Access to quizzes"
 schemes:
   - "https"
   - "http"
@@ -25,51 +25,47 @@ paths:
         - "user"
       summary: "Create user profile"
       description: "This can only be done by the logged in user."
-      operationId: "createUser"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - in: "body"
           name: "body"
-          description: "Created user object"
+          description: "Data about user to be stored"
           required: true
           schema:
             $ref: "#/definitions/User"
       responses:
         200:
-          description: "user was created"
+          description: "User already exists"
+          schema:
+            $ref: "#/definitions/UserReturn"
+        201:
+          description: "User was created"
+          schema:
+            $ref: '#/definitions/UserReturn'
         500: 
-          description: "internal server error"
+          description: "Internal server error"
   /user/{id}:
     get:
       tags:
       - "user"
       summary: "Gets user data"
-      operationId: "loginUser"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - name: "id"
         in: "path"
-        description: "The mongodb id"
+        description: "The user's ID on the database"
         required: true
         type: "string"
+        format: "uuid"
       responses:
         200:
-          description: "successful operation"
+          description: "Successful operation"
           schema:
-            type: "object"
-            properties: 
-              userId: 
-                type: "string"
-                format: "uuid" 
-              email:
-                type: "string"
-            description: "gets user data"
+            $ref: '#/definitions/UserReturn'
         400:
-          description: "Invalid userid supplied"
+          description: "Invalid ID supplied"
     put:
       tags:
       - "user"
@@ -116,15 +112,32 @@ paths:
           description: "Invalid username supplied"
         404:
           description: "User not found"
+  /spotify/{id}:
+    get:
+      tags: 
+        - "user"
+      summary: "Gets user data based on spotify ID"
+      description: "This can only be done by the logged in user."
+      produces:
+        - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The user's Spotify ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: '#/definitions/UserReturn'
   /quiz:
     post:
       tags:
         - "quiz"
       summary: "Create quiz"
       description: "This can only be done by the logged in user."
-      operationId: "createQuiz"
       produces:
-        - "application/xml"
         - "application/json"
       parameters:
         - in: "body"
@@ -138,33 +151,25 @@ paths:
           description: " was created"
         500: 
           description: "internal server error"
-  /quiz/{id}:
+  /quiz/{userId}:
     get:
       tags:
       - "quiz"
-      summary: "Gets quiz"
-      operationId: "getQuiz"
+      summary: "Gets all quizzes by user"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "userId"
         in: "path"
-        description: "The mongodb id"
+        description: "The user's ID in the database"
         required: true
         type: "string"
+        format: "uuid"
       responses:
         200:
-          description: "successful operation"
+          description: "Successful operation"
           schema:
-            type: "object"
-            properties: 
-              quizId: 
-                type: "string"
-                format: "uuid" 
-              email:
-                type: "string"
-            description: "gets quiz data"
+            $ref: '#/definitions/QuizReturn'
         400:
           description: "Invalid userid supplied"
     put:
@@ -177,7 +182,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "userId"
         in: "path"
         description: "quiz that need to be updated"
         required: true
@@ -203,7 +208,7 @@ paths:
       - "application/xml"
       - "application/json"
       parameters:
-      - name: "id"
+      - name: "userId"
         in: "path"
         description: "The quiz that needs to be deleted"
         required: true
@@ -217,15 +222,24 @@ definitions:
   User:
     type: "object"
     properties:
-      id:
-        type: "string"
-        format: "uuid"
       userId:
         type: "string"
       email:
         type: "string"
     xml:
       name: "User"
+  UserReturn: 
+    type: "object"
+    properties: 
+      _id: 
+        type: "string"
+        format: "uuid"
+      userId: 
+        type: "string"
+      email:
+        type: "string"
+      __v: 
+        type: "number"
   Quiz:
     type: "object"
     properties:
@@ -243,3 +257,25 @@ definitions:
               type: "string"
             answer:
               type: "string"
+  QuizReturn:
+    type: "object"
+    properties:
+      _id: 
+        type: "string"
+        format: "uuid"
+      name: 
+        type: "string"
+      user: 
+        type: "string"
+        format: "uuid"
+      questions:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            question:
+              type: "string"
+            answer:
+              type: "string"
+      __v: 
+        type: "number"
