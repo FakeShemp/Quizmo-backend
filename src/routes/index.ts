@@ -9,5 +9,7 @@ router.get("/spotify/:id", users.getBySpotifyId);
 
 router.get('/quiz/:userId', quizzes.get);
 router.post('/quiz', quizzes.create);
+router.patch('/quiz/:id', quizzes.patch)
+router.delete('/quiz/:id', quizzes.delete)
 
 export default router;
