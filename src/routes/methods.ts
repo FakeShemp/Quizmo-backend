@@ -75,7 +75,7 @@ let createQuiz = async (req: any, res: any, next: any) => {
             questions: req.body.questions
         })
         if (result) {
-            res.status(204).send(result);
+            res.status(201).send(result);
         } else {
             throw "Couldn't create quiz!";
         }
